@@ -6,26 +6,26 @@ namespace ProductsApp.Controllers
 {
     public class ProductsController : Controller
     {
-        // GET: Products
+        // GET: Product
         public ActionResult Index()
         {
-            List<Products> products = new List<Products>
+            List<Product> products = new List<Product>
             {
-                new Products
+                new Product
                 {
                     Id = 1,
                     Name = "Xbox",
                     Category = "Gaming",
                     Quantity = 1000
                 },
-                new Products
+                new Product
                 {
                     Id = 2,
                     Name = "Surface",
                     Category = "Productivity",
                     Quantity = 500
                 },
-                new Products
+                new Product
                 {
                     Id = 3,
                     Name = "Kinect",
