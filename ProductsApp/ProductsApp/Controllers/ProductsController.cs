@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using ProductsApp.Models;
@@ -7,41 +8,12 @@ namespace ProductsApp.Controllers
 {
     public class ProductsController : Controller
     {
-        private static List<Product> _products = new List<Product>();
-
-        public ProductsController()
-        {
-            if (_products.Count == 0)
-                _products = new List<Product>
-                {
-                    new Product
-                    {
-                        ProductsId = 1,
-                        ProductsName = "Xbox",
-                        ProductsCategory = "Gaming",
-                        ProductsQuantity = 1000
-                    },
-                    new Product
-                    {
-                        ProductsId = 2,
-                        ProductsName = "Surface",
-                        ProductsCategory = "Productivity",
-                        ProductsQuantity = 500
-                    },
-                    new Product
-                    {
-                        ProductsId = 3,
-                        ProductsName = "Kinect",
-                        ProductsCategory = "Gaming",
-                        ProductsQuantity = 100
-                    }
-                };
-        }
+        private ProductDbEntities _db = new ProductDbEntities();
 
         // GET: Product
         public ActionResult Index()
         {
-            return View(_products);
+            return View(_db.Products.ToList());
         }
 
         public ActionResult Create()
@@ -53,13 +25,14 @@ namespace ProductsApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Product product)
         {
-            _products.Add(product);
+            _db.Products.Add(product);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int id)
         {
-            var product = _products.First(p => p.ProductsId == id);
+            var product = _db.Products.Find(id);
             return View(product);
         }
 
@@ -67,23 +40,21 @@ namespace ProductsApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Product product)
         {
-            var selected = _products.First(p => p.ProductsId == product.ProductsId);
-            selected.ProductsName = product.ProductsName;
-            selected.ProductsCategory = product.ProductsCategory;
-            selected.ProductsQuantity = product.ProductsQuantity;
+            _db.Entry(product).State = EntityState.Modified;
+            _db.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
         public ActionResult Details(int id)
         {
-            var product = _products.First(p => p.ProductsId == id);
+            var product = _db.Products.Find(id);
             return View(product);
         }
 
         public ActionResult Delete(int id)
         {
-            var product = _products.First(p => p.ProductsId == id);
+            var product = _db.Products.Find(id);
             return View(product);
         }
 
@@ -91,9 +62,18 @@ namespace ProductsApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var product = _products.First(p => p.ProductsId == id);
-            _products.Remove(product);
+            var product = _db.Products.Find(id);
+            _db.Products.Remove(product);
+            _db.SaveChanges();
+
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+                _db.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
