@@ -16,24 +16,24 @@ namespace ProductsApp.Controllers
                 {
                     new Product
                     {
-                        Id = 1,
-                        Name = "Xbox",
-                        Category = "Gaming",
-                        Quantity = 1000
+                        ProductsId = 1,
+                        ProductsName = "Xbox",
+                        ProductsCategory = "Gaming",
+                        ProductsQuantity = 1000
                     },
                     new Product
                     {
-                        Id = 2,
-                        Name = "Surface",
-                        Category = "Productivity",
-                        Quantity = 500
+                        ProductsId = 2,
+                        ProductsName = "Surface",
+                        ProductsCategory = "Productivity",
+                        ProductsQuantity = 500
                     },
                     new Product
                     {
-                        Id = 3,
-                        Name = "Kinect",
-                        Category = "Gaming",
-                        Quantity = 100
+                        ProductsId = 3,
+                        ProductsName = "Kinect",
+                        ProductsCategory = "Gaming",
+                        ProductsQuantity = 100
                     }
                 };
         }
@@ -59,7 +59,7 @@ namespace ProductsApp.Controllers
 
         public ActionResult Edit(int id)
         {
-            var product = _products.First(p => p.Id == id);
+            var product = _products.First(p => p.ProductsId == id);
             return View(product);
         }
 
@@ -67,23 +67,23 @@ namespace ProductsApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Product product)
         {
-            var selected = _products.First(p => p.Id == product.Id);
-            selected.Name = product.Name;
-            selected.Category = product.Category;
-            selected.Quantity = product.Quantity;
+            var selected = _products.First(p => p.ProductsId == product.ProductsId);
+            selected.ProductsName = product.ProductsName;
+            selected.ProductsCategory = product.ProductsCategory;
+            selected.ProductsQuantity = product.ProductsQuantity;
 
             return RedirectToAction("Index");
         }
 
         public ActionResult Details(int id)
         {
-            var product = _products.First(p => p.Id == id);
+            var product = _products.First(p => p.ProductsId == id);
             return View(product);
         }
 
         public ActionResult Delete(int id)
         {
-            var product = _products.First(p => p.Id == id);
+            var product = _products.First(p => p.ProductsId == id);
             return View(product);
         }
 
@@ -91,7 +91,7 @@ namespace ProductsApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var product = _products.First(p => p.Id == id);
+            var product = _products.First(p => p.ProductsId == id);
             _products.Remove(product);
             return RedirectToAction("Index");
         }
